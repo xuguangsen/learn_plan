@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登录 | Go Todo</title>
+  <script>
+    (function () {
+      var theme = 'light';
+      try {
+        var raw = localStorage.getItem('studyTracker_v2_backup') || localStorage.getItem('studyTracker_v2');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && parsed.theme === 'dark') {
+            theme = 'dark';
+          }
+        }
+      } catch (_) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="auth-shell">
+    <section class="auth-card">
+      <div class="auth-head">
+        <p class="auth-brand">Go Todo</p>
+        <h1>欢迎回来</h1>
+        <p>登录后可访问你自己的学习计划、计时和统计数据。</p>
+      </div>
+
+      <div class="auth-switch" role="tablist" aria-label="登录注册切换">
+        <button id="tab-login" type="button" class="active">登录</button>
+        <button id="tab-register" type="button">注册</button>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <label for="login-username">用户名</label>
+        <input id="login-username" type="text" minlength="3" maxlength="24" autocomplete="username" placeholder="字母、数字或下划线" required />
+
+        <label for="login-password">密码</label>
+        <input id="login-password" type="password" minlength="6" maxlength="72" autocomplete="current-password" placeholder="请输入密码" required />
+
+        <button id="login-submit" type="submit">登录并进入</button>
+      </form>
+
+      <form id="register-form" class="auth-form" hidden>
+        <label for="register-username">用户名</label>
+        <input id="register-username" type="text" minlength="3" maxlength="24" autocomplete="username" placeholder="字母、数字或下划线" required />
+
+        <label for="register-password">密码</label>
+        <input id="register-password" type="password" minlength="6" maxlength="72" autocomplete="new-password" placeholder="至少 6 位" required />
+
+        <button id="register-submit" type="submit">注册并进入</button>
+      </form>
+
+      <p id="auth-message" class="auth-message" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学习计划 | Go Todo</title>
+  <script>
+    (function () {
+      var theme = 'light';
+      try {
+        var raw = localStorage.getItem('studyTracker_v2_backup') || localStorage.getItem('studyTracker_v2');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && parsed.theme === 'dark') {
+            theme = 'dark';
+          }
+        }
+      } catch (_) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="i-lotus" viewBox="0 0 24 24">
+      <path d="M12 21c-1.5-2.8-1.5-5.7 0-8.5 1.5 2.8 1.5 5.7 0 8.5Z" />
+      <path d="M12 12.5c-3-1.3-4.9-3.7-5.7-7.2 3.1.7 5 3.1 5.7 7.2Z" />
+      <path d="M12 12.5c3-1.3 4.9-3.7 5.7-7.2-3.1.7-5 3.1-5.7 7.2Z" />
+      <path d="M12 12.5c-3.8.3-6.7-1-8.7-3.8 3.6-.3 6.5 1 8.7 3.8Z" />
+      <path d="M12 12.5c3.8.3 6.7-1 8.7-3.8-3.6-.3-6.5 1-8.7 3.8Z" />
+    </symbol>
+    <symbol id="i-plan" viewBox="0 0 24 24">
+      <path d="M9 6h11M9 12h11M9 18h11" />
+      <path d="m4 6 1.4 1.4L7.8 5M4 12l1.4 1.4L7.8 11M4 18l1.4 1.4L7.8 17" />
+    </symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24">
+      <circle cx="12" cy="13" r="8" />
+      <path d="M12 13V9m0 4 3 2M9 3h6" />
+    </symbol>
+    <symbol id="i-stats" viewBox="0 0 24 24">
+      <path d="M4 20h16" />
+      <path d="M7 17v-4M12 17V7M17 17v-7" />
+    </symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24">
+      <path d="M12 4a8 8 0 1 0 0 16h2a2 2 0 0 0 0-4h-1a2 2 0 1 1 0-4h2a5 5 0 0 0 5-5 3 3 0 0 0-3-3h-5Z" />
+      <circle cx="7.5" cy="10.5" r="1" />
+      <circle cx="10.5" cy="8" r="1" />
+      <circle cx="8.5" cy="14" r="1" />
+    </symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M8 3v4m8-4v4M3 10h18" />
+    </symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24">
+      <path d="m15 6-6 6 6 6" />
+    </symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24">
+      <path d="m9 6 6 6-6 6" />
+    </symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6" />
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24">
+      <path d="m8 6 10 6-10 6Z" />
+    </symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24">
+      <path d="M9 6v12M15 6v12" />
+    </symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24">
+      <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+      <path d="M21 4v6h-6" />
+    </symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24">
+      <rect x="7" y="7" width="10" height="10" rx="1" />
+    </symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24">
+      <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v6m4-6v6" />
+    </symbol>
+    <symbol id="i-breakdown" viewBox="0 0 24 24">
+      <path d="M4 5h16M4 12h16M4 19h16M8 5v14M16 12v7" />
+    </symbol>
+    <symbol id="i-pie" viewBox="0 0 24 24">
+      <path d="M12 3v9h9A9 9 0 0 0 12 3Z" />
+      <path d="M11 4a9 9 0 1 0 9 9" />
+    </symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24">
+      <path d="M4 18h16" />
+      <path d="m6 15 4-4 3 2 5-6" />
+    </symbol>
+    <symbol id="i-history" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 3-6.7" />
+      <path d="M3 4v5h5M12 8v5l3 2" />
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14" />
+    </symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24">
+      <path d="M4 20h4l11-11-4-4L4 16v4Z" />
+      <path d="m13 7 4 4" />
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24">
+      <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+    </symbol>
+  </svg>
+
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg class="icon" aria-hidden="true"><use href="#i-lotus"></use></svg>
+        </div>
+        <p class="brand-tag">Go todo</p>
+        <h1>学习中心</h1>
+      </div>
+
+      <nav class="nav-list">
+        <a class="nav-btn active" href="index.html">
+          <svg class="icon" aria-hidden="true"><use href="#i-plan"></use></svg>
+          <span>学习计划</span>
+        </a>
+        <a class="nav-btn" href="timer.html">
+          <svg class="icon" aria-hidden="true"><use href="#i-timer"></use></svg>
+          <span>学习计时</span>
+        </a>
+        <a class="nav-btn" href="stats.html">
+          <svg class="icon" aria-hidden="true"><use href="#i-stats"></use></svg>
+          <span>学习统计</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-foot">
+        <label for="theme-select">
+          <svg class="icon" aria-hidden="true"><use href="#i-palette"></use></svg>
+          <span>UI 风格</span>
+        </label>
+        <select id="theme-select">
+          <option value="light">清新日间</option>
+          <option value="dark">黑夜模式</option>
+        </select>
+        <div class="auth-status">
+          <p class="auth-user-label">当前用户</p>
+          <p id="current-user" class="auth-user-name">--</p>
+          <button id="logout-btn" type="button" class="secondary logout-btn">
+            <svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg>
+            <span>退出登录</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <section class="module-panel active" data-module-panel="plan">
+        <header class="module-header">
+          <h2>
+            <svg class="icon" aria-hidden="true"><use href="#i-folder"></use></svg>
+            <span>学习计划</span>
+          </h2>
+          <p>创建类别与计划，并在周日历上安排与打卡。</p>
+        </header>
+
+        <section class="planner-grid">
+          <section class="panel plan-panel">
+            <div class="panel-title-row">
+              <h3>
+                <svg class="icon" aria-hidden="true"><use href="#i-plan"></use></svg>
+                <span>新增计划</span>
+              </h3>
+            </div>
+
+            <form id="plan-form" class="plan-form">
+              <input id="plan-name-input" type="text" maxlength="30" placeholder="输入类别" required />
+              <button type="submit">
+                <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                <span>新增类别</span>
+              </button>
+            </form>
+
+            <div id="plan-list" class="plan-list"></div>
+            <p id="plan-empty" class="empty-state">还没有类别，请先新增一个。</p>
+          </section>
+
+          <section class="panel calendar-panel">
+            <div class="panel-title-row">
+              <h3>
+                <svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg>
+                <span>本周日程</span>
+              </h3>
+            </div>
+
+            <div class="calendar-nav">
+              <button id="week-prev-btn" type="button" class="secondary">
+                <svg class="icon" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
+                <span>上一周</span>
+              </button>
+              <strong id="calendar-week-label"></strong>
+              <button id="week-next-btn" type="button" class="secondary">
+                <span>下一周</span>
+                <svg class="icon" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+              </button>
+            </div>
+
+            <div id="week-board" class="week-board"></div>
+          </section>
+        </section>
+      </section>
+
+    </section>
+  </main>
+
+  <template id="plan-card-template">
+    <article class="plan-card">
+      <div class="plan-head">
+        <p class="plan-name"></p>
+        <div class="plan-actions">
+          <button type="button" class="toggle-btn secondary">
+            <svg class="icon" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            <span>展开</span>
+          </button>
+          <button type="button" class="edit-btn secondary">
+            <svg class="icon" aria-hidden="true"><use href="#i-edit"></use></svg>
+            <span>修改</span>
+          </button>
+          <button type="button" class="remove-btn danger">
+            <svg class="icon" aria-hidden="true"><use href="#i-trash"></use></svg>
+            <span>删除</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="task-body">
+        <form class="task-form">
+          <input type="text" class="task-title-input" maxlength="50" placeholder="计划名称" required />
+          <input type="date" class="task-start-input" required />
+          <input type="number" class="task-days-input" min="1" max="60" placeholder="天数" required />
+          <button type="submit">
+            <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+            <span>添加计划</span>
+          </button>
+        </form>
+
+        <ul class="task-list"></ul>
+        <p class="task-empty empty-state">该类别还没有具体计划。</p>
+      </div>
+    </article>
+  </template>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Backend build artifacts
+backend/target/
+backend/.m2/
+.m2/
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gotodo.app.mapper.AppUserMapper">
+
+  <!--
+    这个 XML 文件演示 MyBatis 的经典写法：
+    1. 接口中只保留方法声明
+    2. SQL 统一放到 XML 中，适合复杂查询或团队统一管理 SQL
+  -->
+
+  <resultMap id="AppUserResultMap" type="com.gotodo.app.entity.AppUser">
+    <id property="id" column="id"/>
+    <result property="username" column="username"/>
+    <result property="passwordHash" column="password_hash"/>
+    <result property="createdAt" column="created_at"/>
+    <result property="updatedAt" column="updated_at"/>
+  </resultMap>
+
+  <sql id="BaseColumns">
+    id, username, password_hash, created_at, updated_at
+  </sql>
+
+  <select id="findById" resultMap="AppUserResultMap">
+    SELECT <include refid="BaseColumns"/>
+    FROM app_user
+    WHERE id = #{id}
+    LIMIT 1
+  </select>
+
+  <select id="findByUsername" resultMap="AppUserResultMap">
+    SELECT <include refid="BaseColumns"/>
+    FROM app_user
+    WHERE username = #{username}
+    LIMIT 1
+  </select>
+
+  <select id="existsByUsername" resultType="boolean">
+    SELECT EXISTS(
+      SELECT 1
+      FROM app_user
+      WHERE username = #{username}
+    )
+  </select>
+
+  <insert id="insert" parameterType="com.gotodo.app.entity.AppUser" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO app_user (
+      username,
+      password_hash,
+      created_at,
+      updated_at
+    ) VALUES (
+      #{username},
+      #{passwordHash},
+      CURRENT_TIMESTAMP(6),
+      CURRENT_TIMESTAMP(6)
+    )
+  </insert>
+</mapper>
